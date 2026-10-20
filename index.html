@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="de"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes"><title>Resell Radar Pro</title>
+<style>
+:root{--bg:#f3f1f8;--card:#fff;--ink:#171a33;--mut:#6c7090;--line:#e3e1ee;--acc:#ff5a3c;--good:#14a76c;--warn:#e8590c;--hero:#1b1f45;--hero2:#2d2a6e;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0d1024;--card:#171b38;--ink:#f1f1fa;--mut:#9a9dc2;--line:#262b52;--good:#3ddc97;--warn:#ff8a5b;--hero:#1d2152;--hero2:#33307f}}
+:root[data-theme="dark"]{--bg:#0d1024;--card:#171b38;--ink:#f1f1fa;--mut:#9a9dc2;--line:#262b52;--good:#3ddc97;--warn:#ff8a5b;--hero:#1d2152;--hero2:#33307f}
+html,body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.4 ui-rounded,"SF Pro Rounded",-apple-system,system-ui,sans-serif}
+main{max-width:560px;margin:auto;padding:0 14px 120px}
+.hero{margin:10px 0 6px;padding:16px;border-radius:24px;background:linear-gradient(135deg,var(--hero),var(--hero2));color:#fff}
+.top{display:flex;align-items:center;gap:14px}
+.radar{flex:none;width:58px;height:58px;border-radius:50%;position:relative;overflow:hidden;background:repeating-radial-gradient(circle,transparent 0 9px,rgba(255,255,255,.18) 9px 10px),rgba(0,0,0,.25)}
+.radar:after{content:"";position:absolute;inset:0;background:conic-gradient(from 0deg,transparent 0 290deg,rgba(61,220,151,.85) 360deg);animation:sp 3.2s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}@media(prefers-reduced-motion:reduce){.radar:after{animation:none}}
+h1{font-size:1.5rem;margin:0;letter-spacing:-.02em}.sub{margin:2px 0 0;opacity:.75;font-size:.88rem}
+.stats{display:flex;gap:8px;margin-top:12px}.stats div{flex:1;background:rgba(255,255,255,.12);border-radius:14px;padding:8px 10px}.stats b{display:block;font-size:1.15rem}.stats span{font-size:.75rem;opacity:.75}
+h2{font-size:1.05rem;margin:18px 2px 6px}.mut{color:var(--mut);font-size:.85rem}
+.card{background:var(--card);border-radius:20px;padding:14px;margin:10px 0;display:flex;gap:14px;box-shadow:0 1px 0 var(--line)}
+.blk{background:var(--card);border-radius:18px;padding:14px;margin:10px 0}
+.ring{flex:none;width:56px;height:56px;border-radius:50%;display:grid;place-items:center;background:conic-gradient(var(--c) calc(var(--s)*1%),var(--line) 0)}
+.ring b{width:44px;height:44px;border-radius:50%;background:var(--card);display:grid;place-items:center}
+.body{min-width:0;flex:1}.t{font-weight:650;overflow-wrap:anywhere}.m{color:var(--mut);font-size:.86rem;margin-top:2px}
+.chip{display:inline-block;background:var(--bg);border-radius:99px;padding:2px 10px;font-size:.78rem;margin-right:6px;font-weight:600}
+.net{font-weight:700;color:var(--good)}.net.neg{color:var(--warn)}.wn{color:var(--warn);font-size:.86rem;font-weight:600;margin-top:4px}
+.row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+button,.btn{font:inherit;font-size:.9rem;padding:8px 14px;border-radius:99px;border:0;background:var(--bg);color:var(--ink);text-decoration:none;font-weight:600}
+button.p{background:var(--acc);color:#fff}button.on{background:var(--ink);color:var(--bg)}
+label{display:block;font-size:.85rem;color:var(--mut);margin:12px 2px 4px}
+input,select,textarea{width:100%;box-sizing:border-box;font:inherit;padding:12px;border-radius:14px;border:1px solid var(--line);background:var(--card);color:var(--ink)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}.chk{display:flex;align-items:center;gap:10px;color:var(--ink);font-size:1rem;margin:8px 2px}.chk input{width:auto}
+.seg{display:flex;gap:6px;margin:12px 0 4px;overflow-x:auto}.seg button{flex:none}
+.dock{position:fixed;left:0;right:0;bottom:0;display:flex;justify-content:space-around;align-items:center;background:var(--card);border-top:1px solid var(--line);padding:8px 6px calc(8px + env(safe-area-inset-bottom,0px))}
+.dock .tab{background:none;color:var(--mut);padding:10px 8px;font-size:.82rem}.dock .tab.on{color:var(--acc)}
+.fab{width:60px;height:60px;border-radius:50%;margin-top:-32px;background:var(--acc);color:#fff;font-size:2.1rem;line-height:1;padding:0;box-shadow:0 8px 20px rgba(255,90,60,.45)}
+.ov{position:fixed;inset:0;background:rgba(5,6,20,.55);display:none;align-items:flex-end;z-index:5}.ov.open{display:flex}
+.panel{background:var(--bg);width:100%;max-width:560px;margin:auto;border-radius:26px 26px 0 0;padding:18px 16px calc(18px + env(safe-area-inset-bottom,0px));max-height:92%;overflow:auto;box-sizing:border-box}
+.msg{position:fixed;top:calc(10px + env(safe-area-inset-top,0px));left:14px;right:14px;max-width:530px;margin:auto;background:var(--ink);color:var(--bg);padding:12px 16px;border-radius:16px;z-index:9;font-size:.92rem}
+.hide{display:none}.empty{text-align:center;color:var(--mut);padding:30px 10px}table{width:100%;border-collapse:collapse;font-size:.9rem}td{padding:5px 2px;border-bottom:1px solid var(--line)}
+</style></head><body><main>
+<div class="hero"><div class="top"><div class="radar"></div><div><h1>Resell Radar Pro</h1><p class="sub" id="sub"></p></div></div>
+<div class="stats"><div><b id="n1">0</b><span>Deals</span></div><div><b id="n2">–</b><span>Bester Netto</span></div><div><b id="n3">–</b><span>Gebunden</span></div></div></div>
+<div id="msg"></div>
+<section id="v-list"><div class="seg" id="seg"></div><div id="list"></div></section>
+<section id="v-stat" class="hide"></section>
+<section id="v-data" class="hide">
+ <h2>Vergleichspreise</h2><p class="mut">Echte Preise ähnlicher Artikel machen die Gewinnschätzung genauer. „Verkauft“ = tatsächlich erzielt, „Angebot“ = nur verlangt.</p>
+ <div class="two"><div><label>Marke</label><select id="g-m"></select></div><div><label>Kategorie (optional)</label><input id="g-k" placeholder="Hoodie"></div></div>
+ <div class="two"><div><label>Preis (€)</label><input id="g-p" inputmode="decimal"></div><div><label>Art</label><select id="g-a"><option value="verkauft">Verkauft (erzielt)</option><option value="angebot">Angebot (verlangt)</option></select></div></div>
+ <label>Zustand (optional)</label><select id="g-z"><option value="">egal</option><option>Neu mit Etikett</option><option>Sehr gut</option><option>Gut</option><option>Zufriedenstellend</option></select>
+ <div class="row"><button class="p" id="g-add">Vergleichspreis speichern</button></div><div id="g-list"></div>
+ <h2>Import / Export</h2><textarea id="csv" rows="3" placeholder="CSV mit Kopfzeile: titel;preis;versand;zustand;groesse;link;vk_erwartet"></textarea>
+ <div class="row"><button id="b-imp">Angebote importieren</button><button id="b-demo">Testdaten laden</button><button id="b-exp">Käufe als CSV kopieren</button></div>
+</section>
+<section id="v-set" class="hide">
+ <h2>Budget</h2><div class="two"><div><label>Maximalpreis (€)</label><input id="s-max" inputmode="decimal"></div><div><label>Standard-Versand (€)</label><input id="s-ver" inputmode="decimal"></div></div>
+ <label class="chk"><input type="checkbox" id="s-inkl"> Limit gilt inklusive Versand</label>
+ <div class="two"><div><label>Mindest-Nettogewinn (€)</label><input id="s-ming" inputmode="decimal"></div><div><label>Mindest-Score</label><input id="s-mins" inputmode="numeric"></div></div>
+ <label>Gesamtbudget (€, 0 = nicht gesetzt)</label><input id="s-gb" inputmode="decimal">
+ <h2>Verkaufskosten</h2><p class="mut">Trage die echten Gebühren deiner Plattform ein. Solange nicht bestätigt, stehen sie auf 0 und jede Bewertung zeigt einen Hinweis.</p>
+ <div class="two"><div><label>Gebühren gesamt (%)</label><input id="s-geb" inputmode="decimal"></div><div><label>Fixgebühr (€)</label><input id="s-fix" inputmode="decimal"></div></div>
+ <div class="two"><div><label>Versand beim Verkauf (€)</label><input id="s-vv" inputmode="decimal"></div><div><label>Reinigung/Reparatur (€)</label><input id="s-rein" inputmode="decimal"></div></div>
+ <div class="two"><div><label>Sicherheitsreserve (%)</label><input id="s-res" inputmode="decimal"></div><div><label>Angebotspreis-Abschlag</label><input id="s-abs" inputmode="decimal"></div></div>
+ <label class="chk"><input type="checkbox" id="s-ok"> Gebühren sind bestätigt</label>
+ <h2>Marken</h2><div id="s-br"></div>
+ <label>Grobe Markenwerte (Platzhalter, keine Marktdaten) – Zeile je Marke: Name=Wert</label><textarea id="s-refs" rows="6"></textarea>
+ <div class="row"><button class="p" id="b-save">Speichern</button><button id="b-clr">Alles löschen</button></div>
+</section></main>
+<div class="dock"><button class="tab on" data-v="list">Deals</button><button class="tab" data-v="stat">Statistik</button><button class="fab" id="plus">+</button><button class="tab" data-v="data">Daten</button><button class="tab" data-v="set">Einstellungen</button></div>
+<div class="ov" id="add"><div class="panel"><h2 style="margin-top:0">Neues Angebot</h2>
+ <label>Link</label><input id="f-l" inputmode="url" placeholder="Link einfügen"><div class="mut" id="f-hint" style="margin:6px 2px"></div>
+ <label>Titel (aus dem Link erkannt, änderbar)</label><input id="f-t">
+ <div class="two"><div><label>Preis (€)</label><input id="f-p" inputmode="decimal" placeholder="12,00"></div><div><label>Versand (€)</label><input id="f-v" inputmode="decimal"></div></div>
+ <div class="two"><div><label>Zustand</label><select id="f-z"><option value="">unbekannt</option><option>Neu mit Etikett</option><option>Sehr gut</option><option>Gut</option><option>Zufriedenstellend</option></select></div><div><label>Verkaufswert (optional, deine Schätzung)</label><input id="f-e" inputmode="decimal"></div></div>
+ <div class="row"><button class="p" id="b-add">Bewerten und speichern</button><button id="b-x">Abbrechen</button></div></div></div>
+<div class="ov" id="det"><div class="panel">
+ <h2 id="d-h" style="margin-top:0"></h2><div id="d-info"></div><div id="d-act"></div>
+ <h2>Preisverhandlung</h2><div id="d-neg"></div>
+ <h2>Verkaufstext</h2><div class="two"><div><label>Größe</label><input id="x-gr" placeholder="M"></div><div><label>&nbsp;</label><label class="chk"><input type="checkbox" id="x-ec"> Echtheit geprüft</label></div></div>
+ <label>Mängel / Besonderheiten (optional)</label><input id="x-mg"><label>Titel</label><input id="x-t"><div class="row"><button class="p" id="c-t">Titel kopieren</button></div>
+ <label>Beschreibung</label><textarea id="x-d" rows="8"></textarea>
+ <div class="row"><button class="p" id="c-d">Beschreibung kopieren</button><button id="c-m">Meldung kopieren</button><a class="btn" id="d-open" target="_blank" rel="noopener">Angebot öffnen</a><button id="d-del">Löschen</button><button id="d-x">Schließen</button></div></div></div>
+<script>
+const MARKEN={"Nike":["nike"],"adidas":["adidas"],"Ralph Lauren":["ralph lauren","polo ralph lauren","polo rl"],"Stone Island":["stone island"],"New Era":["new era","newera"],"New York Yankees":["yankees","new york yankees"],"Carhartt":["carhartt"],"The North Face":["north face","the north face"],"Patagonia":["patagonia"],"Supreme":["supreme"],"Stüssy":["stüssy","stussy"],"Levi's":["levi's","levis","levi"],"Tommy Hilfiger":["tommy hilfiger","tommy jeans"],"Lacoste":["lacoste"],"Diesel":["diesel"]};
+const REFS={"Nike":30,"adidas":28,"Ralph Lauren":35,"Stone Island":100,"New Era":25,"New York Yankees":25,"Carhartt":40,"The North Face":45,"Patagonia":50,"Supreme":80,"Stüssy":35,"Levi's":25,"Tommy Hilfiger":25,"Lacoste":25,"Diesel":30};
+const AUS=["kinder","baby","defekt","kaputt","flecken","loch"],FAKE=["fake","replica","replika","inspired","kopie","nachbau","nicht original","1:1"];
+const ZF=[["neu mit etikett",1],["neu ohne etikett",.95],["neu",.95],["sehr gut",.85],["gut",.7],["zufriedenstellend",.5]];
+const ZT=[["neu mit etikett","Neu mit Etikett, ungetragen."],["neu ohne etikett","Neuwertig, ohne Etikett."],["neu","Neu und ungetragen."],["sehr gut","Sehr guter Zustand, kaum Gebrauchsspuren."],["gut","Guter Zustand mit leichten Gebrauchsspuren."],["zufriedenstellend","Zufriedenstellender Zustand mit sichtbaren Gebrauchsspuren, siehe Fotos."]];
+const TYP=[["hoodie|kapuzen","Hoodie"],["trainingsjacke","Trainingsjacke"],["windbreaker","Windbreaker"],["fleece","Fleecejacke"],["jacke|jacket","Jacke"],["weste","Weste"],["trikot|jersey","Trikot"],["pullover","Pullover"],["sweat","Sweatshirt"],["polo(?!\\s*(ralph|rl))","Poloshirt"],["shirt","T-Shirt"],["cap|kappe|snapback","Cap"],["jeans","Jeans"],["sneaker|schuhe","Sneaker"]];
+const DEF={max:15,inkl:true,minG:10,minS:75,ver:3,geb:0,fix:0,vv:0,rein:0,res:10,gebOk:false,abs:.85,gb:0,aktiv:Object.keys(MARKEN),refs:{...REFS}};
+let S={cfg:{...DEF},offers:[],verg:[]},F="neu",SI=-1;
+try{const r=localStorage.getItem("rrp");if(r){const o=JSON.parse(r);S.cfg={...DEF,...(o.cfg||{})};S.offers=o.offers||[];S.verg=o.verg||[]}
+ else{const r0=JSON.parse(localStorage.getItem("rr")||"null");if(r0)S.offers=(r0.offers||[]).map(o=>({titel:o.titel,preis:o.preis,versand:o.versand,zustand:o.zustand,link:o.link,vkEst:"",s:o.s||""}))}}catch(e){}
+const save=()=>{try{localStorage.setItem("rrp",JSON.stringify(S))}catch(e){}};
+const $=i=>document.getElementById(i);
+const esc=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const eur=p=>(p==null||isNaN(p))?"–":p.toFixed(2).replace(".",",")+" €";
+const L="(?<![\\p{L}\\d_])",R="(?![\\p{L}\\d_])",q=a=>a.replace(/[.*+?^${}()|[\]\\]/g,"\\$&");
+function num(w){let t=String(w==null?"":w).replace(/€|EUR|\s/g,"");if(!t)return NaN;t=t.includes(",")&&t.includes(".")?t.replace(/\./g,"").replace(",","."):t.replace(",",".");return /^\d+(\.\d+)?$/.test(t)?parseFloat(t):NaN}
+const marken=t=>Object.entries(MARKEN).filter(([n,al])=>[...al,n].some(a=>new RegExp(L+q(a.toLowerCase())+R,"iu").test(t.toLowerCase()))).map(x=>x[0]);
+const kat=t=>{for(const [r,n] of TYP)if(new RegExp(L+"("+r+")","iu").test(t))return n;return ""};
+const zf=z=>{z=(z||"").toLowerCase();for(const [w,f] of ZF)if(z.includes(w))return f;return .7};
+const vf=()=>(S.cfg.geb+S.cfg.res)/100,fx=()=>S.cfg.fix+S.cfg.vv+S.cfg.rein;
+const gewinn=(ek,vk)=>+(vk-vk*vf()-fx()-ek).toFixed(2),maxEk=vk=>vk*(1-vf())-fx()-S.cfg.minG,breakEven=ek=>(ek+fx())/(1-vf());
+function vergleich(marke,k,z){let rows=S.verg.filter(r=>r.marke===marke&&(!k||!r.kat||r.kat===k));if(!rows.length)return null;
+ const f=zf(z),gl=rows.filter(r=>r.zustand&&zf(r.zustand)===f);if(gl.length>=3)rows=gl;
+ const vk=rows.filter(r=>r.art==="verkauft"),art=vk.length?"verkauft":"angebot",b=vk.length?vk:rows,ps=b.map(r=>r.preis).sort((a,c)=>a-c),n=ps.length,med=n%2?ps[(n-1)/2]:(ps[n/2-1]+ps[n/2])/2;
+ return{wert:art==="verkauft"?med:med*S.cfg.abs,n,konf:art==="verkauft"?(n>=5?"hoch":n>=3?"mittel":"niedrig"):(n>=5?"mittel":"niedrig"),
+  text:"Vergleich: "+n+(art==="verkauft"?" erzielte Verkaufspreise":" Angebotspreise (×"+S.cfg.abs+" angenommen)")+", Median "+eur(med)+", Spanne "+eur(ps[0])+"–"+eur(ps[n-1])}}
+const KONF={hoch:[15,1],mittel:[10,.75],niedrig:[4,.5],keine:[0,0]};
+function bewerte(o){const c=S.cfg,tl=o.titel.toLowerCase(),m=marken(o.titel),p=num(o.preis),v=isNaN(num(o.versand))?c.ver:num(o.versand);
+ const e={...o,m,marke:m.join(" / ")||"unbekannt",kat:kat(o.titel),p,v,ek:p+v,risiken:[],fehlend:[],score:0,netto:null,rg:0,vk:null,quelle:"keine Datenbasis",konf:"keine",grund:""};
+ if(isNaN(p)){e.grund="Preis ungültig";return e}
+ if(!m.length)e.grund="keine bekannte Marke";else if(!m.some(x=>c.aktiv.includes(x)))e.grund="Marke deaktiviert";else if(AUS.some(w=>tl.includes(w)))e.grund="Ausschlussbegriff";else if((c.inkl?e.ek:p)>c.max)e.grund="über Budget";
+ e.ok=!e.grund;
+ FAKE.forEach(w=>{if(tl.includes(w))e.risiken.push("Titel enthält „"+w+"“ – Echtheit prüfen")});
+ if(m.filter(x=>x!=="New Era"&&x!=="New York Yankees").length>=2)e.risiken.push("Titel nennt mehrere Marken – prüfen");
+ const eig=num(o.vkEst);
+ if(!isNaN(eig)){e.vk=eig;e.konf="mittel";e.quelle="eigene Schätzung"}
+ else{const vg=m.length?vergleich(m[0],e.kat,o.zustand):null;if(vg){e.vk=vg.wert;e.konf=vg.konf;e.quelle=vg.text}
+  else{const rs=m.map(x=>c.refs[x]).filter(Boolean);if(rs.length){e.vk=Math.max(...rs)*zf(o.zustand);e.konf="niedrig";e.quelle="grober Markenwert × Zustand (keine Marktdaten)"}}}
+ if(!c.gebOk)e.fehlend.push("Plattformgebühren nicht bestätigt (Einstellungen)");
+ if(!(o.groesse||"").trim())e.fehlend.push("Größe fehlt");
+ if(e.vk==null){e.fehlend.push("Verkaufswert unbekannt – eigene Schätzung oder Vergleichspreise eintragen");return e}
+ const ref=Math.max(0,...m.map(x=>c.refs[x]||0));
+ if(ref&&e.ek<ref*.2)e.risiken.push("Auffällig günstig – Echtheit manuell prüfen");
+ if(/neu/i.test(o.zustand||"")&&e.ek<e.vk*.3)e.risiken.push("„Neu“ zu auffällig niedrigem Preis – prüfen");
+ if(e.konf==="niedrig")e.risiken.push("Verkaufswert nur grob geschätzt");
+ e.g={konservativ:gewinn(e.ek,e.vk*.75),mittel:gewinn(e.ek,e.vk),optimistisch:gewinn(e.ek,e.vk*1.2)};e.netto=e.g.mittel;
+ e.roi=e.ek?e.netto/e.ek*100:0;e.be=breakEven(e.ek);e.ers=(e.vk-e.ek)/e.vk*100;
+ e.rg=e.netto*KONF[e.konf][1]*(e.risiken.some(r=>/Echtheit/.test(r))&&e.netto>0?.5:1);
+ const T=[["Gewinn",Math.max(0,Math.min(40,e.rg/20*40)),40],["Rendite",Math.max(0,Math.min(20,e.roi/150*20)),20],["Datenqualität",KONF[e.konf][0],15],["Zustand",10*zf(o.zustand),10],["Risiko",Math.max(0,15-10*e.risiken.length),15]];
+ e.teile=T.map(([n,x,mx])=>n+": "+Math.round(x)+"/"+mx);e.score=Math.round(T.reduce((a,t)=>a+t[1],0));return e}
+function verhandlung(e){if(e.vk==null)return null;const mp=Math.min(e.p,maxEk(e.vk)-e.v);if(mp<=0)return{ok:false};
+ const ziel=Math.min(Math.round(e.p*.85),mp),start=Math.min(Math.round(e.p*.7),ziel);
+ return{ok:true,st:[["Einstieg",start],["Ziel",ziel],["Maximal",Math.floor(mp)]].map(([n,p])=>[n,p,gewinn(p+e.v,e.vk)]),
+  msg:"Hallo, dein Artikel „"+e.titel.slice(0,60)+"“ gefällt mir sehr gut. Wärst du mit "+start+" € einverstanden? Ich kann direkt kaufen. Viele Grüße"}}
+function saleText(e,o){const t=kat(e.titel),mk=e.m.join(" ")||"Artikel",gr=(o.gr||"").trim().replace(/^gr\.?\s*/i,"");
+ const fa=["schwarz","weiß","weiss","blau","grau","rot","grün","gelb","beige","navy","braun","rosa","orange"].filter(w=>new RegExp(L+w,"iu").test(e.titel)).map(f=>f[0].toUpperCase()+f.slice(1));
+ const titel=[mk,/vintage/i.test(e.titel)?"Vintage":"",t,...fa,gr?"Gr. "+gr:""].filter(Boolean).join(" "),z=(e.zustand||"").toLowerCase(),zt=(ZT.find(([w])=>z.includes(w))||[0,"Zustand siehe Fotos."])[1];
+ const l=[mk+" "+(t||"Artikel")+(gr?" in Größe "+gr:"")+".",zt];if((o.mg||"").trim())l.push(o.mg.trim().replace(/\.?$/,"."));if(o.ec)l.push("Echtheit von mir geprüft.");
+ l.push("Maße gerne auf Anfrage. Bei Fragen einfach schreiben.");
+ return{titel,desc:l.join("\n")+"\n\n"+[...e.m.map(x=>x.toLowerCase().replace(/\s+/g,"")),t.toLowerCase().replace(/[^a-zäöü]/g,""),"streetwear"].filter(Boolean).map(x=>"#"+x).join(" ")}}
+const monat=()=>new Date().toISOString().slice(0,7);
+function stats(){const m=monat(),E=S.offers.filter(o=>o.s).map(o=>({o,e:bewerte(o),ek:(num(o.ekP)||0)+(num(o.ekV)||0)}));
+ const kM=E.filter(x=>(x.o.kaufDatum||"").startsWith(m)),vM=E.filter(x=>x.o.s==="verkauft"&&(x.o.verkDatum||"").startsWith(m)),dok=vM.filter(x=>!isNaN(num(x.o.vkKosten))&&x.o.vkKosten!=="");
+ const g=x=>num(x.o.vkP)-num(x.o.vkKosten)-x.ek,sum=a=>a.reduce((s,x)=>s+x,0),offen=E.filter(x=>x.o.s==="gekauft");
+ const dauer=E.filter(x=>x.o.s==="verkauft"&&x.o.kaufDatum&&x.o.verkDatum).map(x=>(new Date(x.o.verkDatum)-new Date(x.o.kaufDatum))/864e5);
+ const mk={};dok.forEach(x=>{mk[x.e.marke]=(mk[x.e.marke]||0)+g(x)});
+ const gebunden=sum(offen.map(x=>x.ek));
+ return{ausgaben:sum(kM.map(x=>x.ek)),erloese:sum(vM.map(x=>num(x.o.vkP))),real:sum(dok.map(g)),unvoll:vM.length-dok.length,kn:kM.length,vn:vM.length,gebunden,
+  prog:sum(offen.map(x=>Math.max(0,x.e.netto||0))),rend:dok.length?sum(dok.map(x=>g(x)/x.ek*100))/dok.length:null,dauer:dauer.length?sum(dauer)/dauer.length:null,
+  top:Object.entries(mk).sort((a,b)=>b[1]-a[1]).slice(0,3),frei:S.cfg.gb?S.cfg.gb-gebunden:null}}
+function note(t){const d=$("msg");d.innerHTML='<div class="msg">'+esc(t)+'</div>';clearTimeout(note.t);note.t=setTimeout(()=>d.innerHTML="",3200)}
+function copy(t){const ok=()=>note("Kopiert.");try{navigator.clipboard.writeText(t).then(ok,fb)}catch(e){fb()}
+ function fb(){const x=document.createElement("textarea");x.value=t;document.body.appendChild(x);x.select();try{document.execCommand("copy");ok()}catch(e){note("Kopieren nicht möglich.")}x.remove()}}
+//UI
+const go=v=>document.querySelector('.tab[data-v="'+v+'"]').click();
+const tgText=e=>"📡 RESELL RADAR PRO – NEUER DEAL\n\nMarke: "+e.marke+"\nTitel: "+e.titel+"\nEinkauf: "+eur(e.ek)+" (inkl. Versand)\nVerkaufswert (Schätzung): "+eur(e.vk)+"\nNettogewinn: "+eur(e.netto)+"\nRendite: "+(e.roi||0).toFixed(0)+" %\nDeal-Score: "+e.score+"/100 · Sicherheit: "+e.konf+(e.risiken.length?"\n⚠️ "+e.risiken.join("; "):"")+(e.link?"\nLink: "+e.link:"");
+function render(){const c=S.cfg,all=S.offers.map((o,i)=>({...bewerte(o),i})),st=o=>o.s||(o.fav?"fav":"");
+ const f=F==="neu"?x=>!x.s&&x.ok:F==="fav"?x=>x.fav&&!x.s:x=>x.s===F,cnt=k=>all.filter(k==="neu"?x=>!x.s&&x.ok:k==="fav"?x=>x.fav&&!x.s:x=>x.s===k).length;
+ const list=all.filter(f).sort((a,b)=>b.rg-a.rg);
+ $("seg").innerHTML=[["neu","Neu"],["fav","★ Favoriten"],["gekauft","Gekauft"],["verkauft","Verkauft"]].map(([k,n])=>'<button data-f="'+k+'" class="'+(F===k?"on":"")+'">'+n+" "+cnt(k)+"</button>").join("");
+ $("seg").querySelectorAll("button").forEach(b=>b.onclick=()=>{F=b.dataset.f;render()});
+ $("sub").textContent="Budget "+eur(+c.max)+(c.inkl?" inkl. Versand":"")+" · Schätzungen, keine Garantie";
+ const dl=all.filter(x=>!x.s&&x.ok&&x.netto!=null),s=stats();$("n1").textContent=cnt("neu");$("n2").textContent=dl.length?eur(Math.max(...dl.map(x=>x.netto))):"–";$("n3").textContent=eur(s.gebunden);
+ let h=list.length?"":'<div class="empty">Noch nichts hier.<br>Tippe auf <b>+</b> oder lade unter „Daten“ die Testdaten.</div>';
+ list.forEach(e=>{const w=e.risiken.length,col=w?"var(--warn)":e.score<c.minS?"var(--mut)":"var(--good)";
+  h+='<div class="card"><div class="ring" style="--s:'+e.score+';--c:'+col+'"><b>'+e.score+'</b></div><div class="body"><div class="t">'+esc(e.titel)+'</div><div class="m"><span class="chip">'+esc(e.marke)+'</span>'+esc(e.zustand||"Zustand unbekannt")+'</div>'
+  +'<div style="margin-top:6px;font-weight:650">Einkauf '+eur(e.ek)+' · <span class="net'+(e.netto<0?' neg':'')+'">Netto '+eur(e.netto)+'</span></div>'
+  +(e.vk!=null?'<div class="m">Verkaufen für ca. '+eur(e.vk)+' · Sicherheit: '+e.konf+'</div>':'<div class="m">Verkaufswert unbekannt</div>')
+  +e.risiken.slice(0,2).map(r=>'<div class="wn">⚠️ '+esc(r)+'</div>').join("")
+  +'<div class="row"><button class="p" data-o="'+e.i+'">Details</button><button data-s="'+e.i+'">'+(e.fav?"★ Favorit":"☆ Merken")+'</button></div></div></div>'});
+ const sk=all.filter(x=>!x.s&&!x.ok);if(F==="neu"&&sk.length)h+='<h2>Aussortiert</h2>'+sk.map(x=>'<div class="m" style="margin:4px 2px">'+esc(x.titel)+' – '+esc(x.grund)+'</div>').join("");
+ $("list").innerHTML=h;
+ $("list").querySelectorAll("[data-o]").forEach(b=>b.onclick=()=>openDet(+b.dataset.o));
+ $("list").querySelectorAll("[data-s]").forEach(b=>b.onclick=()=>{const o=S.offers[b.dataset.s];o.fav=!o.fav;save();render()});
+ renderStat();renderData()}
+function renderStat(){const s=stats(),m=n=>n==null?"–":n.toFixed(1).replace(".",",");
+ $("v-stat").innerHTML='<h2>Statistik '+monat()+'</h2><div class="blk"><b>Tatsächlich (Ist)</b><table><tr><td>Ausgaben (Einkäufe)</td><td>'+eur(s.ausgaben)+'</td></tr><tr><td>Erlöse (Verkäufe)</td><td>'+eur(s.erloese)+'</td></tr><tr><td><b>Realisierter Nettogewinn</b></td><td><b>'+eur(s.real)+'</b></td></tr><tr><td>Gekauft / verkauft</td><td>'+s.kn+' / '+s.vn+'</td></tr><tr><td>Verkäufe ohne Kostenangabe</td><td>'+s.unvoll+'</td></tr><tr><td>Ø Rendite</td><td>'+(s.rend==null?"–":m(s.rend)+" %")+'</td></tr><tr><td>Ø Verkaufsdauer</td><td>'+(s.dauer==null?"–":m(s.dauer)+" Tage")+'</td></tr><tr><td>Gebundenes Kapital</td><td>'+eur(s.gebunden)+'</td></tr>'+(s.frei!=null?'<tr><td>Frei vom Gesamtbudget</td><td>'+eur(s.frei)+'</td></tr>':'')+'</table>'
+ +'<p class="mut">Gewinn zählt erst als realisiert, wenn beim Verkauf die Kosten angegeben wurden.</p></div><div class="blk"><b>Prognose (Schätzung)</b><table><tr><td>Erwarteter Gewinn aus unverkauften Artikeln</td><td>'+eur(s.prog)+'</td></tr></table></div>'
+ +(s.top.length?'<div class="blk"><b>Top-Marken (realisiert)</b><table>'+s.top.map(([n,g])=>'<tr><td>'+esc(n)+'</td><td>'+eur(g)+'</td></tr>').join("")+'</table></div>':'')}
+function renderData(){const by={};S.verg.forEach((r,i)=>{(by[r.marke]=by[r.marke]||[]).push(i)});
+ $("g-list").innerHTML=S.verg.length?'<div class="blk"><table>'+S.verg.map((r,i)=>'<tr><td>'+esc(r.marke)+(r.kat?" · "+esc(r.kat):"")+'</td><td>'+(r.art==="verkauft"?"verkauft":"Angebot")+'</td><td>'+eur(r.preis)+'</td><td><button data-gd="'+i+'" style="padding:2px 10px">×</button></td></tr>').join("")+'</table></div>':'<p class="mut">Noch keine Vergleichspreise.</p>';
+ $("g-list").querySelectorAll("[data-gd]").forEach(b=>b.onclick=()=>{S.verg.splice(b.dataset.gd,1);save();render()})}
+function openDet(i){SI=i;const o=S.offers[i];$("x-gr").value=o.gr||"";$("x-mg").value=o.mg||"";$("x-ec").checked=!!o.ec;$("det").classList.add("open");drawDet(true)}
+function drawDet(regen){const o=S.offers[SI],e=bewerte(o),v=verhandlung(e);$("d-h").textContent=e.titel;
+ $("d-info").innerHTML='<div class="blk"><div class="m"><span class="chip">'+esc(e.marke)+'</span><span class="chip">'+(o.s==="verkauft"?"Verkauft":o.s==="gekauft"?"Gekauft":"Gefunden")+'</span></div><table><tr><td>Einkauf (Preis + Versand)</td><td>'+eur(e.ek)+'</td></tr>'
+ +(e.vk!=null?'<tr><td>Verkaufswert (Schätzung)</td><td>'+eur(e.vk)+'</td></tr><tr><td>Nettogewinn kons. / mittel / opt.</td><td>'+eur(e.g.konservativ)+' / '+eur(e.g.mittel)+' / '+eur(e.g.optimistisch)+'</td></tr><tr><td>Rendite · Break-even · Ersparnis</td><td>'+e.roi.toFixed(0)+' % · '+eur(e.be)+' · '+e.ers.toFixed(0)+' %</td></tr>':'')
+ +'<tr><td>Deal-Score</td><td><b>'+e.score+'/100</b></td></tr></table><p class="mut">Quelle Verkaufswert: '+esc(e.quelle)+(e.teile?"<br>Warum: "+esc(e.teile.join(" · ")):"")+'</p>'
+ +e.risiken.map(r=>'<div class="wn">⚠️ '+esc(r)+'</div>').join("")+e.fehlend.map(f=>'<div class="m">ℹ️ '+esc(f)+'</div>').join("")+'</div>';
+ let a="";if(!o.s)a='<div class="blk"><b>Gekauft?</b><div class="two"><div><label>Preis (€)</label><input id="a-p" inputmode="decimal" value="'+esc(String(o.preis).replace(".",","))+'"></div><div><label>Versand (€)</label><input id="a-v" inputmode="decimal" value="'+esc(String(e.v).replace(".",","))+'"></div></div><div class="row"><button class="p" id="a-ok">Als gekauft speichern</button></div></div>';
+ else if(o.s==="gekauft")a='<div class="blk"><b>Verkauft?</b><div class="two"><div><label>Verkaufspreis (€)</label><input id="a-p" inputmode="decimal"></div><div><label>Kosten gesamt (€)</label><input id="a-v" inputmode="decimal" placeholder="Gebühren, Versand, Reinigung"></div></div><div class="row"><button class="p" id="a-ok">Als verkauft speichern</button><button id="a-rs">Zurücksetzen</button></div></div>';
+ else{const g=o.vkKosten===""||o.vkKosten==null?null:num(o.vkP)-num(o.vkKosten)-(num(o.ekP)||0)-(num(o.ekV)||0);a='<div class="blk"><b>Verkauft für '+eur(num(o.vkP))+'</b><p class="mut">'+(g==null?"Kosten fehlen – Gewinn noch nicht realisiert.":"Realisierter Nettogewinn: "+eur(g))+'</p><div class="row"><button id="a-rs">Zurücksetzen</button></div></div>'}
+ $("d-act").innerHTML=a;
+ $("d-neg").innerHTML=!v?'<p class="mut">Ohne Verkaufswert kein Preisvorschlag.</p>':!v.ok?'<p class="mut">Laut Schätzung lohnt sich der Kauf auch verhandelt nicht.</p>':'<div class="blk"><table>'+v.st.map(([n,p,g])=>'<tr><td>'+n+'</td><td>'+p+' €</td><td>Netto '+eur(g)+'</td></tr>').join("")+'</table><p class="mut">Schätzung. Wird nie automatisch gesendet.</p><div class="row"><button id="c-n">Nachricht kopieren</button></div></div>';
+ if($("c-n"))$("c-n").onclick=()=>copy(v.msg);
+ const ok=$("a-ok");if(ok)ok.onclick=()=>{const p=num($("a-p").value);
+  if(!o.s){const vv=num($("a-v").value);if(isNaN(p)||isNaN(vv))return note("Preis und Versand eintragen.");o.s="gekauft";o.ekP=p;o.ekV=vv;o.kaufDatum=new Date().toISOString()}
+  else{if(isNaN(p))return note("Verkaufspreis eintragen.");const k=$("a-v").value.trim();if(k&&isNaN(num(k)))return note("Kosten ungültig.");o.s="verkauft";o.vkP=p;o.vkKosten=k;o.verkDatum=new Date().toISOString();
+   S.verg=S.verg.filter(r=>r.eigen!==o.id);if(e.m.length)S.verg.push({marke:e.m[0],kat:e.kat,zustand:o.zustand||"",preis:p,art:"verkauft",eigen:o.id})}
+  save();render();drawDet(false);note("Gespeichert.")};
+ const rs=$("a-rs");if(rs)rs.onclick=()=>{o.s="";S.verg=S.verg.filter(r=>r.eigen!==o.id);save();render();drawDet(false)};
+ $("d-open").style.display=/^https?:\/\//.test(o.link||"")?"":"none";$("d-open").href=o.link||"#";
+ if(regen){const t=saleText(e,o);$("x-t").value=t.titel;$("x-d").value=t.desc}}
+document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>{document.querySelectorAll(".tab").forEach(x=>x.classList.toggle("on",x===b));["list","stat","data","set"].forEach(v=>$("v-"+v).classList.toggle("hide",v!==b.dataset.v));window.scrollTo(0,0)});
+["x-gr","x-mg"].forEach(i=>$(i).oninput=()=>{const o=S.offers[SI];o.gr=$("x-gr").value;o.mg=$("x-mg").value;save();drawDet(true)});
+$("x-ec").onchange=()=>{S.offers[SI].ec=$("x-ec").checked;save();drawDet(true)};
+$("c-t").onclick=()=>copy($("x-t").value);$("c-d").onclick=()=>copy($("x-d").value);$("c-m").onclick=()=>copy(tgText(bewerte(S.offers[SI])));
+const closeDet=()=>{$("det").classList.remove("open");SI=-1;render()};$("d-x").onclick=closeDet;$("det").onclick=e=>{if(e.target===$("det"))closeDet()};
+$("d-del").onclick=()=>{if(confirm("Angebot löschen?")){S.offers.splice(SI,1);save();closeDet()}};
+function slug(u){try{const url=new URL(u),segs=url.pathname.split("/").filter(Boolean).map(s=>decodeURIComponent(s));let b="";for(const s of segs){if(/^\d+$/.test(s)||/^(items?|p|s-anzeige|itm|anzeige|member)$/i.test(s))continue;if(s.length>b.length)b=s}
+ const t=b.replace(/\.\w{2,4}$/,"").replace(/^\d+[-_]/,"").replace(/[-_+]+/g," ").replace(/\s\d{6,}$/,"").trim();return t?t[0].toUpperCase()+t.slice(1):""}catch(e){return ""}}
+const fix=l=>{l=l.trim();return l&&!/^https?:\/\//i.test(l)&&/\./.test(l)?"https://"+l:l};
+const key=l=>{try{const u=new URL(l);return(u.host+u.pathname.replace(/\/$/,"")).toLowerCase().replace(/^www\./,"")}catch(e){return l}};
+function hint(){const l=fix($("f-l").value);if(!l){$("f-hint").textContent="";return}const t=slug(l);if(t&&(!$("f-t").value||$("f-t").dataset.auto==="1")){$("f-t").value=t;$("f-t").dataset.auto="1"}
+ const m=marken($("f-t").value);$("f-hint").textContent=m.length?"Marke erkannt: "+m.join(" / "):"Keine Zielmarke erkannt – passe den Titel an."}
+$("f-l").oninput=hint;$("f-t").oninput=()=>{$("f-t").dataset.auto="0";hint()};
+async function openAdd(){$("f-v").value=String(S.cfg.ver).replace(".",",");$("add").classList.add("open");
+ try{const t=(await navigator.clipboard.readText()||"").trim();if(/^https?:\/\/\S+$/.test(t)&&!$("f-l").value){$("f-l").value=t;hint()}}catch(e){}setTimeout(()=>($("f-l").value?$("f-p"):$("f-l")).focus(),50)}
+const closeAdd=()=>{$("add").classList.remove("open");["f-l","f-t","f-p","f-e"].forEach(i=>$(i).value="");$("f-hint").textContent="";$("f-z").value=""};
+$("plus").onclick=openAdd;$("b-x").onclick=closeAdd;$("add").onclick=e=>{if(e.target===$("add"))closeAdd()};
+$("b-add").onclick=()=>{const link=fix($("f-l").value);if(!/^https?:\/\/\S+/.test(link))return note("Bitte einen Link einfügen.");const titel=$("f-t").value.trim()||slug(link)||"Angebot";
+ if(isNaN(num($("f-p").value)))return note("Bitte den Preis eintragen, z. B. 12,00.");if(S.offers.some(o=>o.link&&key(o.link)===key(link)))return note("Dieser Link ist schon gespeichert.");
+ const o={id:Date.now()+Math.random(),titel,preis:$("f-p").value.trim(),versand:$("f-v").value.trim(),zustand:$("f-z").value,link,vkEst:$("f-e").value.trim(),s:""};S.offers.push(o);save();const e=bewerte(o);closeAdd();F="neu";render();go("list");
+ note(e.ok?"Gespeichert. Score "+e.score+"/100, Netto "+eur(e.netto)+".":"Gespeichert, aber aussortiert: "+e.grund+".")};
+function setup(){const c=S.cfg;$("s-max").value=c.max;$("s-ver").value=c.ver;$("s-inkl").checked=c.inkl;$("s-ming").value=c.minG;$("s-mins").value=c.minS;$("s-gb").value=c.gb;$("s-geb").value=c.geb;$("s-fix").value=c.fix;$("s-vv").value=c.vv;$("s-rein").value=c.rein;$("s-res").value=c.res;$("s-abs").value=c.abs;$("s-ok").checked=c.gebOk;
+ $("s-refs").value=Object.entries(c.refs).map(([k,v])=>k+"="+v).join("\n");$("s-br").innerHTML=Object.keys(MARKEN).map(n=>'<label class="chk"><input type="checkbox" value="'+esc(n)+'"'+(c.aktiv.includes(n)?" checked":"")+'>'+esc(n)+'</label>').join("");
+ $("g-m").innerHTML=Object.keys(MARKEN).map(n=>"<option>"+esc(n)+"</option>").join("")}
+$("b-save").onclick=()=>{const c=S.cfg,N=i=>num($(i).value),ids=["s-max","s-ver","s-ming","s-mins","s-gb","s-geb","s-fix","s-vv","s-rein","s-res","s-abs"];if(ids.some(i=>isNaN(N(i))))return note("Ein Zahlenfeld ist ungültig.");
+ Object.assign(c,{max:N("s-max"),ver:N("s-ver"),minG:N("s-ming"),minS:N("s-mins"),gb:N("s-gb"),geb:N("s-geb"),fix:N("s-fix"),vv:N("s-vv"),rein:N("s-rein"),res:N("s-res"),abs:N("s-abs"),inkl:$("s-inkl").checked,gebOk:$("s-ok").checked});
+ const refs={};for(const l of $("s-refs").value.split("\n")){const [k,v]=l.split("=");if(k&&!isNaN(num(v)))refs[k.trim()]=num(v)}c.refs=refs;c.aktiv=[...$("s-br").querySelectorAll("input:checked")].map(x=>x.value);save();render();note("Gespeichert.")};
+$("g-add").onclick=()=>{const p=num($("g-p").value);if(isNaN(p))return note("Bitte einen Preis eintragen.");S.verg.push({marke:$("g-m").value,kat:$("g-k").value.trim(),zustand:$("g-z").value,preis:p,art:$("g-a").value});$("g-p").value="";save();render();note("Vergleichspreis gespeichert.")};
+function imp(t,quelle){const Ls=t.trim().split(/\r?\n/);if(Ls.length<2)return note("CSV leer.");const d=Ls[0].includes(";")?";":",",k=Ls[0].split(d).map(x=>x.trim().toLowerCase());if(!k.includes("titel")||!k.includes("preis"))return note("Kopfzeile fehlt: titel;preis;versand;zustand;groesse;link;vk_erwartet");
+ let n=0;Ls.slice(1).forEach(l=>{const v=l.split(d),r={};k.forEach((x,i)=>r[x]=(v[i]||"").trim());if(!r.titel||isNaN(num(r.preis)))return;if(r.link&&S.offers.some(o=>o.link&&key(o.link)===key(r.link)))return;
+  S.offers.push({id:Date.now()+Math.random(),titel:r.titel,preis:r.preis,versand:r.versand||"",zustand:r.zustand||"",groesse:r.groesse||"",link:r.link||"",vkEst:r.vk_erwartet||"",s:""});n++});save();render();note(n+" Angebote importiert.");go("list")}
+$("b-imp").onclick=()=>imp($("csv").value);
+$("b-demo").onclick=()=>{S.verg.push(...[[22,"verkauft"],[26,"verkauft"],[24,"verkauft"]].map(([p,a])=>({marke:"Nike",kat:"Hoodie",zustand:"Gut",preis:p,art:a,demo:1})));
+ imp("titel;preis;versand;zustand;groesse;link;vk_erwartet\nNike Tech Fleece Hoodie schwarz;7;3;Gut;M;https://example.com/d1;\nCarhartt Detroit Jacke Vintage;9;4,5;Gut;L;https://example.com/d2;55\nStone Island Pullover Rundhals;8;3;Gut;L;https://example.com/d3;60\nNike Cap Replica;2;2;Neu;;https://example.com/d4;\nPuma Hoodie;3;3;Gut;M;https://example.com/d5;20")};
+$("b-exp").onclick=()=>copy("titel;einkauf;gekauft_am;verkaufspreis;kosten;realisierter_gewinn\n"+S.offers.filter(o=>o.s).map(o=>{const ek=(num(o.ekP)||0)+(num(o.ekV)||0),g=o.s==="verkauft"&&o.vkKosten!==""&&o.vkKosten!=null?(num(o.vkP)-num(o.vkKosten)-ek).toFixed(2):"";
+ return[o.titel,ek,o.kaufDatum||"",o.vkP||"",o.vkKosten||"",g].map(x=>{x=String(x).replace(/;/g,",");return/^[=+\-@]/.test(x)?"'"+x:x}).join(";")}).join("\n"));
+$("b-clr").onclick=()=>{if(confirm("Alle Angebote und Vergleichspreise löschen?")){S.offers=[];S.verg=[];save();render()}};
+setup();render();
+</script></body></html>
